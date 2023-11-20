@@ -1,6 +1,6 @@
 # Typescript-WebdriverIO-API-UI
 
-I've creted two separate repositories, because api tests could be much faster and more reliable than ui. API tests could be used as fast check if the application is working from backend perspective. Test could be easily run on github actions.
+Two separate repositories were created, because api tests could be much faster and more reliable than ui. API tests could be used as fast check if the application is working from backend perspective. Test could be easily run on github actions.
 
 # UI tests
 
