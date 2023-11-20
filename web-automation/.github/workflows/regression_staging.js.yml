@@ -1,0 +1,50 @@
+name: Regression on Staging
+on:
+  workflow_dispatch:
+    inputs:
+      ENV:
+        required: true
+        type: string
+        default: "staging"
+      BROWSER:
+        required: true
+        default: "chrome"
+        type: choice
+        options:
+          - "chrome"
+          - "firefox"
+      TEST_CYCLE_ID:
+        required: false
+        type: string
+        default: "Test-Cycle-1"
+      TEST_CYCLE_NAME:
+        required: true
+        type: string
+        default: "Automated Regression Tests"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.0
+      - name: Install
+        run: npm install
+      - name: "Create env file"
+        run: |
+          touch .env
+          echo BASE_URL=${{ secrets.STAGE_BASE_URL}} >> .env
+          echo STANDARD_USER=${{ secrets.TEST_STANDARD_USER }} >> .env
+          echo PROBLEM_USER=${{ secrets.TEST_PROBLEM_USER }} >> .env
+          echo LOCKED_OUT_USER=${{ secrets.TEST_LOCKED_OUT_USER }} >> .env
+          echo PASSWORD=${{ secrets.TEST_PASSWORD }} >> .env
+          cat .env
+      - name: Test
+        run: npm run wdio
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: logs
+          path: logs

@@ -1,0 +1,7 @@
+.tmp
+node_modules
+.env
+package-lock.json
+out
+allure-results
+.DStore
